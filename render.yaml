@@ -1,0 +1,31 @@
+# Render Blueprint for the Smart Plant Watering Robot backend.
+# Docs: https://render.com/docs/blueprint-spec
+# This file describes the Express web service. The actual secrets
+# (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, DEVICE_TOKEN_PEPPER, etc.) must be
+# entered in the Render dashboard (Environment tab). Do NOT put secrets here.
+
+services:
+  - type: web
+    name: smart-plant-watering-backend
+    env: node
+    # Deploy from the repo root; the backend lives in `backend/`.
+    rootDir: backend
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        # Render injects PORT automatically; this is a fallback/default.
+        value: 8080
+      # Required secrets — set these in the Render dashboard, NOT in this file:
+      # - FRONTEND_URL  (your Netlify production URL)
+      # - ALLOWED_ORIGINS  (comma-separated allowed CORS origins)
+      # - SUPABASE_URL
+      # - SUPABASE_ANON_KEY
+      # - SUPABASE_SERVICE_ROLE_KEY
+      # - DEVICE_TOKEN_PEPPER
